@@ -16,10 +16,19 @@ class SwiftNetTestBed {
         testApi()
     }
     
+    // MARK: - Test
+    
     private func testApi() {
-//        testGetToDoItemRequest()
+        testGetToDoItemRequest()
         testPostToDoItemRequest()
+        
+        Task { @MainActor in
+            await testGetToDoItemRequest_Async()
+            await testPostToDoItemRequest_Async()
+        }
     }
+    
+    // MARK: - Result
     
     private func testGetToDoItemRequest() {
         let request = GetToDoItemRequest(id: 1)
@@ -48,6 +57,35 @@ class SwiftNetTestBed {
             case .failure(let error):
                 print(error)
             }
+        }
+    }
+    
+    
+    // MARK: - Async/Await
+    
+    private func testGetToDoItemRequest_Async() async {
+        let request = GetToDoItemRequest(id: 1)
+        do {
+            let response = try await swiftNet.request(request)
+            print(response)
+        } catch {
+            print(error)
+        }
+    }
+    
+    private func testPostToDoItemRequest_Async() async {
+        let request = PostToDoItemRequest(
+            requestDTO: PostToDoItemRequestDTO(
+                title: "foo",
+                body: "bar",
+                userId: 1
+            )
+        )
+        do {
+            let response = try await swiftNet.request(request)
+            print(response)
+        } catch {
+            print(error)
         }
     }
 }

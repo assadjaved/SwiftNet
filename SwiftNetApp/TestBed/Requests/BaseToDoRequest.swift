@@ -21,7 +21,7 @@ class BaseToDoRequest<Response: Decodable>: SwiftNetRequest {
         [
             .contentType(value: .json),
             .accept(value: .json),
-            .authorization(value: "Bearer token")
+            .authorization(token: "Bearer token")
         ]
     }
     

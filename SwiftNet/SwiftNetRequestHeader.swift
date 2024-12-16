@@ -14,7 +14,7 @@ public enum SwiftNetRequestHeader {
     case accept(value: SwiftNetHeaderAcceptType)
     
     // Authorization e.g. Bearer <token>
-    case authorization(value: String)
+    case authorization(token: String)
     
     // header key and value
     var httpHeader: (key: String, value: String) {
@@ -23,8 +23,8 @@ public enum SwiftNetRequestHeader {
             return ("Content-Type", value.rawValue)
         case .accept(let value):
             return ("Accept", value.rawValue)
-        case .authorization(let value):
-            return ("Authorization", value)
+        case .authorization(let token):
+            return ("Authorization", token)
         }
     }
 }
