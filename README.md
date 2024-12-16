@@ -14,6 +14,7 @@
 - 🔗 **Simple API** for making network requests.
 - 🛡️ **Error Handling** with error descriptions.
 - 🚦 **Asynchronous Requests** using `async/await`.
+- 💻 **RxSwift Support** using `Single` api.
 - 💾 **Decodable Support** for easy JSON decoding.
 - 🔒 **HTTPS** ready with configurable headers and authentication.
 
