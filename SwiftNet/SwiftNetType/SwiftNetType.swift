@@ -6,8 +6,10 @@
 //
 
 import Foundation
+import RxSwift
 
 public protocol SwiftNetType {
     func request<T: SwiftNetRequest>(_ request: T, completion: @escaping (Result<T.Response, SwiftNetError>) -> Void)
     func request<T: SwiftNetRequest>(_ request: T) async throws -> T.Response
+    func request<T: SwiftNetRequest>(_ request: T) -> Single<T.Response>
 }

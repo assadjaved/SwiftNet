@@ -7,9 +7,11 @@
 
 import Foundation
 import SwiftNet
+import RxSwift
 
 class SwiftNetTestBed {
-    let swiftNet: SwiftNetType
+    private let swiftNet: SwiftNetType
+    private let disposeBag = DisposeBag()
     
     init(swiftNet: SwiftNetType = SwiftNet()) {
         self.swiftNet = swiftNet
@@ -26,6 +28,9 @@ class SwiftNetTestBed {
             await testGetToDoItemRequest_Async()
             await testPostToDoItemRequest_Async()
         }
+        
+        testGetToDoItemRequest_Single()
+        testPostToDoItemRequest_Single()
     }
     
     // MARK: - Result
@@ -87,5 +92,37 @@ class SwiftNetTestBed {
         } catch {
             print(error)
         }
+    }
+    
+    // MARK: - Single
+    
+    private func testGetToDoItemRequest_Single() {
+        let request = GetToDoItemRequest(id: 1)
+        swiftNet.request(request)
+            .observe(on: MainScheduler.instance)
+            .subscribe { dto in
+                print(dto)
+            } onFailure: { error in
+                print(error)
+            }
+            .disposed(by: disposeBag)
+    }
+    
+    private func testPostToDoItemRequest_Single() {
+        let request = PostToDoItemRequest(
+            requestDTO: PostToDoItemRequestDTO(
+                title: "foo",
+                body: "bar",
+                userId: 1
+            )
+        )
+        swiftNet.request(request)
+            .observe(on: MainScheduler.instance)
+            .subscribe { dto in
+                print(dto)
+            } onFailure: { error in
+                print(error)
+            }
+            .disposed(by: disposeBag)
     }
 }

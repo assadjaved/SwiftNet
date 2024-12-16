@@ -1,16 +1,23 @@
 PODS:
-  - SwiftNet (1.0.0)
+  - RxSwift (6.8.0)
+  - SwiftNet (1.0.0):
+    - RxSwift
 
 DEPENDENCIES:
   - SwiftNet (from `.`)
+
+SPEC REPOS:
+  trunk:
+    - RxSwift
 
 EXTERNAL SOURCES:
   SwiftNet:
     :path: "."
 
 SPEC CHECKSUMS:
-  SwiftNet: 139b685d27c215d8daccde277356f7471e780413
+  RxSwift: 4e28be97cbcfeee614af26d83415febbf2bf6f45
+  SwiftNet: a52b3d6050802f9ae77fcff01c4a327fd515f733
 
-PODFILE CHECKSUM: b3dfd2781438ff100209941e2dcb511ddf0f4d18
+PODFILE CHECKSUM: 1f714dbef5dbd7e57f1d0416a831b8bd50d77e7d
 
 COCOAPODS: 1.14.3

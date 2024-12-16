@@ -13,6 +13,11 @@
   "platforms": {
     "ios": "16.0"
   },
-  "source_files": "SwiftNet/**/*.{swift}",
-  "frameworks": "Foundation"
+  "source_files": "SwiftNet/**/*.{swift,h,m}",
+  "frameworks": "Foundation",
+  "dependencies": {
+    "RxSwift": [
+
+    ]
+  }
 }

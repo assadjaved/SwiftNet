@@ -6,7 +6,7 @@ Pod::Spec.new do |spec|
   spec.author                 = { 'Asad Javed' => 'assad.j.karim@gmail.com' }
   spec.source                 = { :git => 'https://github.com/assadjaved/SwiftNet.git', :tag => spec.version.to_s }
   spec.ios.deployment_target  = '16.0'
-  spec.source_files           = 'SwiftNet/**/*.{swift}'
+  spec.source_files           = 'SwiftNet/**/*.{swift,h,m}'
   spec.frameworks             = 'Foundation'
+  spec.dependency               'RxSwift'
 end
-

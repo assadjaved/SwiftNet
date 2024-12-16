@@ -1,7 +1,7 @@
 platform :ios, '16.0'
+use_frameworks!
 
 target 'SwiftNetApp' do
-  use_frameworks! :linkage => :static
 
   # Pods for SwiftNetApp
   pod 'SwiftNet', :path => '.', :inhibit_warnings => false
