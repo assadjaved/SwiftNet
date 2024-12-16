@@ -25,6 +25,8 @@ class BaseToDoRequest<Response: Decodable>: SwiftNetRequest {
         ]
     }
     
+    var additionalHeaders: [SwiftNetRequestHeader] { [] }
+    
     var parameters: [SwiftNetRequestParameter] { fatalError("override in subclass") }
     
     func decode(data: Data) throws -> Response {

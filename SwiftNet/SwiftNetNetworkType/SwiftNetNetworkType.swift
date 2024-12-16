@@ -7,7 +7,7 @@
 
 import Foundation
 
-public protocol SwiftNetNetworkType {
+protocol SwiftNetNetworkType {
     func process<T: SwiftNetRequest>(_ request: T, completion: @escaping (Result<Data, SwiftNetError>) -> Void)
     func process<T: SwiftNetRequest>(_ request: T) async throws -> Data
 }

@@ -11,10 +11,22 @@ public protocol SwiftNetRequest {
     // response type
     associatedtype Response: Decodable
     
+    // base url
     var baseUrl: String { get }
+    
+    // path
     var path: String { get }
+    
+    // request method
     var method: SwiftNetRequestMethod { get }
+    
+    // common request headers
     var headers: [SwiftNetRequestHeader] { get }
+    
+    // additional request headers
+    var additionalHeaders: [SwiftNetRequestHeader] { get }
+    
+    // request parameters
     var parameters: [SwiftNetRequestParameter] { get }
     
     // decode response

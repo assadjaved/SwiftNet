@@ -6,7 +6,7 @@
 //
 
 extension SwiftNetNetwork {
-    public func process<T: SwiftNetRequest>(_ request: T, completion: @escaping (Result<Data, SwiftNetError>) -> Void) {
+    func process<T: SwiftNetRequest>(_ request: T, completion: @escaping (Result<Data, SwiftNetError>) -> Void) {
         // create request URL
         guard var urlRequest = createRequestURL(from: request) else {
             completion(.failure(SwiftNetError.invalidURL))

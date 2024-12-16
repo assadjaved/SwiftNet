@@ -7,12 +7,10 @@
 
 import Foundation
 
-public class SwiftNetNetwork: SwiftNetNetworkType {
+class SwiftNetNetwork: SwiftNetNetworkType {
     enum Constants {
         static let serverError = "Server error"
     }
-    
-    public init() {}
     
     func createRequestURL(from request: any SwiftNetRequest) -> URLRequest? {
         // create URL
@@ -41,7 +39,8 @@ public class SwiftNetNetwork: SwiftNetNetworkType {
         var urlRequest = URLRequest(url: url)
         
         // set headers
-        for requestHeader in request.headers {
+        let requestHeaders = request.headers + request.additionalHeaders
+        for requestHeader in requestHeaders {
             let httpHeader = requestHeader.httpHeader
             urlRequest.setValue(httpHeader.value, forHTTPHeaderField: httpHeader.key)
         }

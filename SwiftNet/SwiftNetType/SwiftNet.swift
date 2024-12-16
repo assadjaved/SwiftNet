@@ -10,7 +10,7 @@ import Foundation
 public class SwiftNet: SwiftNetType {
     let network: SwiftNetNetworkType
     
-    public init(network: SwiftNetNetworkType = SwiftNetNetwork()) {
-        self.network = network
+    public init() {
+        self.network = SwiftNetNetwork()
     }
 }
