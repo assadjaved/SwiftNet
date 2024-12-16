@@ -1,0 +1,6 @@
+framework module SwiftNet {
+  umbrella header "SwiftNet-umbrella.h"
+
+  export *
+  module * { export * }
+}

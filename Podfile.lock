@@ -1,0 +1,16 @@
+PODS:
+  - SwiftNet (1.0.0)
+
+DEPENDENCIES:
+  - SwiftNet (from `.`)
+
+EXTERNAL SOURCES:
+  SwiftNet:
+    :path: "."
+
+SPEC CHECKSUMS:
+  SwiftNet: 139b685d27c215d8daccde277356f7471e780413
+
+PODFILE CHECKSUM: b3dfd2781438ff100209941e2dcb511ddf0f4d18
+
+COCOAPODS: 1.14.3
