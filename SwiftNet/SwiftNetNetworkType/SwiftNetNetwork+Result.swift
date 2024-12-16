@@ -17,7 +17,7 @@ extension SwiftNetNetwork {
         urlRequest.httpMethod = request.method.value
         
         // create task
-        let task = URLSession.shared.dataTask(with: urlRequest) { data, response, error in
+        let task = URLSession.shared.dataTask(with: urlRequest) { [weak self] data, response, error in
             
             // check error
             if let error {
@@ -40,30 +40,8 @@ extension SwiftNetNetwork {
             let statusCode = httpResponse.statusCode
             let responseJSON = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
             
-            switch statusCode {
-            // handle success status code
-            case 200...299:
-                // check if response contains an error code and message
-                let errorCode = (
-                    responseJSON?["error_code"] ??
-                    responseJSON?["errorCode"] ??
-                    responseJSON?["err"]
-                ) as? String ?? ""
-                if !errorCode.isEmpty {
-                    let message = (
-                        responseJSON?["message"] ??
-                        responseJSON?["msg"]
-                    ) as? String ?? Constants.serverError
-                    completion(.failure(.serverError(errorCode: errorCode, message: message)))
-                    return
-                }
-            // handle other status codes
-            default:
-                let message = (
-                    responseJSON?["message"] ??
-                    responseJSON?["msg"]
-                ) as? String ?? Constants.serverError
-                completion(.failure(.serverError(errorCode: String(statusCode), message: message)))
+            if let error = self?.scanResponseForError(statusCode, responseJSON: responseJSON) {
+                completion(.failure(error))
                 return
             }
             

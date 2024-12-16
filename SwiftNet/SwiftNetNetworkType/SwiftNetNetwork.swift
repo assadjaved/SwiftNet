@@ -51,4 +51,45 @@ public class SwiftNetNetwork: SwiftNetNetworkType {
         
         return urlRequest
     }
+    
+    func scanResponseForError(_ statusCode: Int, responseJSON: [String: Any]?) -> SwiftNetError? {
+        func firstValidValue(from possibleValues: [Any?]) -> String? {
+            possibleValues.compactMap {
+                if let stringValue = $0 as? String {
+                    return stringValue
+                } else if let intValue = $0 as? Int {
+                    return String(intValue)
+                }
+                return nil
+            }.first
+        }
+        
+        let errorCode = firstValidValue(from: [
+            responseJSON?["error_code"],
+            responseJSON?["errorCode"],
+            responseJSON?["err"]
+        ])
+        
+        let message = firstValidValue(from: [
+            responseJSON?["message"],
+            responseJSON?["msg"],
+            responseJSON?["errorMsg"],
+            responseJSON?["errorMessage"],
+            responseJSON?["error_msg"],
+            responseJSON?["error_message"]
+        ]) ?? Constants.serverError
+        
+        switch statusCode {
+        // handle success status code
+        case 200...299:
+            if let errorCode {
+                return SwiftNetError.serverError(errorCode: errorCode, message: message)
+            }
+        // handle other status codes
+        default:
+            return SwiftNetError.serverError(errorCode: String(statusCode), message: message)
+        }
+        
+        return nil
+    }
 }

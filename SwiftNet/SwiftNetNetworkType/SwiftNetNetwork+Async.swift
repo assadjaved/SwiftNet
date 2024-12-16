@@ -26,29 +26,8 @@ extension SwiftNetNetwork {
             let statusCode = httpResponse.statusCode
             let responseJSON = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
             
-            switch statusCode {
-            // handle success status code
-            case 200...299:
-                // check if response contains an error code and message
-                let errorCode = (
-                    responseJSON?["error_code"] ??
-                    responseJSON?["errorCode"] ??
-                    responseJSON?["err"]
-                ) as? String ?? ""
-                if !errorCode.isEmpty {
-                    let message = (
-                        responseJSON?["message"] ??
-                        responseJSON?["msg"]
-                    ) as? String ?? Constants.serverError
-                    throw SwiftNetError.serverError(errorCode: errorCode, message: message)
-                }
-            // handle other status codes
-            default:
-                let message = (
-                    responseJSON?["message"] ??
-                    responseJSON?["msg"]
-                ) as? String ?? Constants.serverError
-                throw SwiftNetError.serverError(errorCode: String(statusCode), message: message)
+            if let error = scanResponseForError(statusCode, responseJSON: responseJSON) {
+                throw error
             }
             
             return data
