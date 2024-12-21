@@ -1,13 +1,37 @@
 PODS:
+  - CwlCatchException (2.2.1):
+    - CwlCatchExceptionSupport (~> 2.2.1)
+  - CwlCatchExceptionSupport (2.2.1)
+  - CwlMachBadInstructionHandler (2.2.2)
+  - CwlPosixPreconditionTesting (2.2.2)
+  - CwlPreconditionTesting (2.2.2):
+    - CwlCatchException (~> 2.2.1)
+    - CwlMachBadInstructionHandler (~> 2.2.2)
+    - CwlPosixPreconditionTesting (~> 2.2.2)
+  - Nimble (13.7.0):
+    - CwlPreconditionTesting (~> 2.2.0)
+  - Quick (7.6.2)
   - RxSwift (6.8.0)
   - SwiftNet (1.0.0):
+    - RxSwift
+  - SwiftNet/SwiftNetTests (1.0.0):
+    - Nimble
+    - Quick
     - RxSwift
 
 DEPENDENCIES:
   - SwiftNet (from `.`)
+  - SwiftNet/SwiftNetTests (from `.`)
 
 SPEC REPOS:
   trunk:
+    - CwlCatchException
+    - CwlCatchExceptionSupport
+    - CwlMachBadInstructionHandler
+    - CwlPosixPreconditionTesting
+    - CwlPreconditionTesting
+    - Nimble
+    - Quick
     - RxSwift
 
 EXTERNAL SOURCES:
@@ -15,9 +39,16 @@ EXTERNAL SOURCES:
     :path: "."
 
 SPEC CHECKSUMS:
+  CwlCatchException: 7acc161b299a6de7f0a46a6ed741eae2c8b4d75a
+  CwlCatchExceptionSupport: 54ccab8d8c78907b57f99717fb19d4cc3bce02dc
+  CwlMachBadInstructionHandler: dae4fdd124d45c9910ac240287cc7b898f4502a1
+  CwlPosixPreconditionTesting: ecd095aa2129e740b44301c34571e8d85906fb88
+  CwlPreconditionTesting: 67a0047dd4de4382b93442c0e3f25207f984f35a
+  Nimble: 0d202a1be6a346929560c212341240339875b6f0
+  Quick: b8bec97cd4b9f21da0472d45580f763b801fc353
   RxSwift: 4e28be97cbcfeee614af26d83415febbf2bf6f45
-  SwiftNet: a52b3d6050802f9ae77fcff01c4a327fd515f733
+  SwiftNet: 351bc23a4b2a0dc92a1b2b04100c3fae8f665b22
 
-PODFILE CHECKSUM: 1f714dbef5dbd7e57f1d0416a831b8bd50d77e7d
+PODFILE CHECKSUM: 72a9dbe84ffcf88bc62046d5116793f14d2acf41
 
 COCOAPODS: 1.14.3

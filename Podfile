@@ -4,7 +4,7 @@ use_frameworks!
 target 'SwiftNetApp' do
 
   # Pods for SwiftNetApp
-  pod 'SwiftNet', :path => '.', :inhibit_warnings => false
+  pod 'SwiftNet', :path => '.', :inhibit_warnings => false, :testspecs => ['SwiftNetTests']
 
   target 'SwiftNetAppTests' do
     inherit! :search_paths

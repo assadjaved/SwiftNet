@@ -13,11 +13,26 @@
   "platforms": {
     "ios": "16.0"
   },
-  "source_files": "SwiftNet/**/*.{swift,h,m}",
+  "source_files": "SwiftNet/Sources/**/*.{swift,h,m}",
   "frameworks": "Foundation",
   "dependencies": {
     "RxSwift": [
 
     ]
-  }
+  },
+  "testspecs": [
+    {
+      "name": "SwiftNetTests",
+      "test_type": "unit",
+      "source_files": "SwiftNet/Tests/**/*.{swift}",
+      "dependencies": {
+        "Quick": [
+
+        ],
+        "Nimble": [
+
+        ]
+      }
+    }
+  ]
 }

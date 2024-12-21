@@ -47,16 +47,22 @@
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		EC853FD12CFC6C4F0070580C /* SwiftNetApp */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+			);
 			path = SwiftNetApp;
 			sourceTree = "<group>";
 		};
 		EC853FE22CFC6C520070580C /* SwiftNetAppTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+			);
 			path = SwiftNetAppTests;
 			sourceTree = "<group>";
 		};
 		EC853FEC2CFC6C520070580C /* SwiftNetAppUITests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+			);
 			path = SwiftNetAppUITests;
 			sourceTree = "<group>";
 		};
