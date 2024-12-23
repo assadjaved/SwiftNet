@@ -7,6 +7,8 @@
 
 import Quick
 import Nimble
+import RxSwift
+import RxTest
 @testable import SwiftNet
 
 class SwiftNetTests: AsyncSpec {
@@ -118,5 +120,75 @@ class SwiftNetTests: AsyncSpec {
             expect(error).to(matchError(SwiftNetError.decodingError(error: NSError(domain: "com.swiftnet.mock", code: 1, userInfo: nil)))
             )
         })
+    }
+    
+    
+    // MARK: - SwiftNet+Single
+    
+    func test_SwiftNet_Single_Success() {
+        let network = SwiftNetNetworkMock()
+        let swiftNet = SwiftNet(network: network)
+        let request = SwiftNetRequestMock()
+        let disposeBag = DisposeBag()
+        
+        var receivedResponse: SwiftNetRequestMock.ResponseMockDto?
+        var receivedError: Error?
+        
+        swiftNet.request(request)
+            .subscribe { value in
+                receivedResponse = value
+            } onFailure: { error in
+                receivedError = error
+            }
+            .disposed(by: disposeBag)
+        
+        expect(receivedResponse).toEventually(equal(SwiftNetRequestMock.ResponseMockDto(foo: "foo", bar: "bar")), timeout: .seconds(3))
+        expect(receivedError).toEventually(beNil(), timeout: .seconds(3))
+    }
+    
+    func test_SwiftNet_Single_Failure() {
+        let network = SwiftNetNetworkMock()
+        let swiftNet = SwiftNet(network: network)
+        let request = SwiftNetRequestMock()
+        let disposeBag = DisposeBag()
+        
+        var receivedResponse: SwiftNetRequestMock.ResponseMockDto?
+        var receivedError: Error?
+        
+        network.error = .serverError(errorCode: "foo", message: "bar")
+        
+        swiftNet.request(request)
+            .subscribe { value in
+                receivedResponse = value
+            } onFailure: { error in
+                receivedError = error
+            }
+            .disposed(by: disposeBag)
+        
+        expect(receivedResponse).toEventually(beNil(), timeout: .seconds(3))
+        expect(receivedError).toEventually(matchError(SwiftNetError.serverError(errorCode: "foo", message: "bar")), timeout: .seconds(3))
+    }
+    
+    func test_SwiftNet_Single_Decoding_Failure() {
+        let network = SwiftNetNetworkMock()
+        let swiftNet = SwiftNet(network: network)
+        let request = SwiftNetRequestMock()
+        let disposeBag = DisposeBag()
+        
+        var receivedResponse: SwiftNetRequestMock.ResponseMockDto?
+        var receivedError: Error?
+        
+        request.forceDecodingError = true
+        
+        swiftNet.request(request)
+            .subscribe { value in
+                receivedResponse = value
+            } onFailure: { error in
+                receivedError = error
+            }
+            .disposed(by: disposeBag)
+        
+        expect(receivedResponse).toEventually(beNil(), timeout: .seconds(3))
+        expect(receivedError).toEventually(matchError(SwiftNetError.decodingError(error: NSError(domain: "com.swiftnet.mock", code: 1, userInfo: nil))), timeout: .seconds(3))
     }
 }

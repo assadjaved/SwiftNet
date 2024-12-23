@@ -14,5 +14,6 @@ Pod::Spec.new do |spec|
     test_spec.source_files    = 'SwiftNet/Tests/**/*.{swift}'
     test_spec.dependency        'Quick'
     test_spec.dependency        'Nimble'
+    test_spec.dependency        'RxTest'
   end
 end

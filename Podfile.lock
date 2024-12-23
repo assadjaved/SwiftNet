@@ -12,12 +12,15 @@ PODS:
     - CwlPreconditionTesting (~> 2.2.0)
   - Quick (7.6.2)
   - RxSwift (6.8.0)
+  - RxTest (6.8.0):
+    - RxSwift (= 6.8.0)
   - SwiftNet (1.0.0):
     - RxSwift
   - SwiftNet/SwiftNetTests (1.0.0):
     - Nimble
     - Quick
     - RxSwift
+    - RxTest
 
 DEPENDENCIES:
   - SwiftNet (from `.`)
@@ -33,6 +36,7 @@ SPEC REPOS:
     - Nimble
     - Quick
     - RxSwift
+    - RxTest
 
 EXTERNAL SOURCES:
   SwiftNet:
@@ -47,7 +51,8 @@ SPEC CHECKSUMS:
   Nimble: 0d202a1be6a346929560c212341240339875b6f0
   Quick: b8bec97cd4b9f21da0472d45580f763b801fc353
   RxSwift: 4e28be97cbcfeee614af26d83415febbf2bf6f45
-  SwiftNet: 351bc23a4b2a0dc92a1b2b04100c3fae8f665b22
+  RxTest: d0fa1ec82feb41efa826a59173ec65eafbbe4aaf
+  SwiftNet: 7e63bef941366c2af435eae0e21ac5e1a19c44b0
 
 PODFILE CHECKSUM: 72a9dbe84ffcf88bc62046d5116793f14d2acf41
 
