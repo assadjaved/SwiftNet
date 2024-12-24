@@ -17,7 +17,7 @@ extension SwiftNetNetwork {
         urlRequest.httpMethod = request.method.value
         
         // create task
-        let task = URLSession.shared.dataTask(with: urlRequest) { [weak self] data, response, error in
+        httpClient.requestDataTask(with: urlRequest) { [weak self] data, response, error in
             
             // check error
             if let error {
@@ -26,7 +26,7 @@ extension SwiftNetNetwork {
             }
             
             // check data
-            guard let data = data else {
+            guard let data else {
                 completion(.failure(.invalidData))
                 return
             }
@@ -47,7 +47,5 @@ extension SwiftNetNetwork {
             
             completion(.success(data))
         }
-        
-        task.resume()
     }
 }

@@ -12,6 +12,12 @@ class SwiftNetNetwork: SwiftNetNetworkType {
         static let serverError = "Server error"
     }
     
+    let httpClient: SwiftNetHttpClient
+    
+    init(httpClient: SwiftNetHttpClient = URLSession.shared) {
+        self.httpClient = httpClient
+    }
+    
     func createRequestURL(from request: any SwiftNetRequest) -> URLRequest? {
         // create URL
         guard var url = URL(string: request.baseUrl) else { return nil }
@@ -86,7 +92,7 @@ class SwiftNetNetwork: SwiftNetNetworkType {
             }
         // handle other status codes
         default:
-            return SwiftNetError.serverError(errorCode: String(statusCode), message: message)
+            return SwiftNetError.serverError(errorCode: errorCode ?? String(statusCode), message: message)
         }
         
         return nil

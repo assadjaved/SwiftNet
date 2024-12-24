@@ -16,7 +16,7 @@ extension SwiftNetNetwork {
         urlRequest.httpMethod = request.method.value
         
         do {
-            let (data, response) = try await URLSession.shared.data(for: urlRequest)
+            let (data, response) = try await httpClient.requestData(for: urlRequest)
             
             // check response
             guard let httpResponse = response as? HTTPURLResponse else {

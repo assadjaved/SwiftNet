@@ -191,4 +191,128 @@ class SwiftNetTests: AsyncSpec {
         expect(receivedResponse).toEventually(beNil(), timeout: .seconds(3))
         expect(receivedError).toEventually(matchError(SwiftNetError.decodingError(error: NSError(domain: "com.swiftnet.mock", code: 1, userInfo: nil))), timeout: .seconds(3))
     }
+    
+    
+    // MARK: - SwiftNetNetwork+Result
+    
+    func test_SwiftNetNetwork_Result_Success() {
+        let httpClient = SwiftNetHttpClientMock()
+        let network = SwiftNetNetwork(httpClient: httpClient)
+        let request = SwiftNetRequestMock()
+        
+        httpClient.data = try! JSONEncoder().encode(SwiftNetRequestMock.ResponseMockDto(foo: "foo", bar: "bar"))
+        httpClient.urlResponse = HTTPURLResponse(url: URL(string: "https://foo.bar.com")!, statusCode: 200, httpVersion: nil, headerFields: nil)
+        
+        waitUntil(timeout: .seconds(3)) { done in
+            network.process(request) { result in
+                expect(result).to(beSuccess { data in
+                    expect(try! request.decode(data: data)).to(equal(SwiftNetRequestMock.ResponseMockDto(foo: "foo", bar: "bar")))
+                })
+            }
+            done()
+        }
+    }
+    
+    func test_SwiftNetNetwork_Result_Failure_Generic_Error() {
+        let httpClient = SwiftNetHttpClientMock()
+        let network = SwiftNetNetwork(httpClient: httpClient)
+        let request = SwiftNetRequestMock()
+        
+        httpClient.error = NSError.swiftNetMockError
+        
+        waitUntil(timeout: .seconds(3)) { done in
+            network.process(request) { result in
+                expect(result).to(beFailure { error in
+                    expect(error).to(matchError(SwiftNetError.genericError(message: NSError.swiftNetMockError.localizedDescription)))
+                })
+            }
+            done()
+        }
+    }
+    
+    func test_SwiftNetNetwork_Result_Failure_Invalid_Data() {
+        let httpClient = SwiftNetHttpClientMock()
+        let network = SwiftNetNetwork(httpClient: httpClient)
+        let request = SwiftNetRequestMock()
+        
+        waitUntil(timeout: .seconds(3)) { done in
+            network.process(request) { result in
+                expect(result).to(beFailure { error in
+                    expect(error).to(matchError(SwiftNetError.invalidData))
+                })
+            }
+            done()
+        }
+    }
+    
+    func test_SwiftNetNetwork_Result_Failure_Invalid_Response() {
+        let httpClient = SwiftNetHttpClientMock()
+        let network = SwiftNetNetwork(httpClient: httpClient)
+        let request = SwiftNetRequestMock()
+        
+        httpClient.data = Data()
+        
+        waitUntil(timeout: .seconds(3)) { done in
+            network.process(request) { result in
+                expect(result).to(beFailure { error in
+                    expect(error).to(matchError(SwiftNetError.invalidResponse))
+                })
+            }
+            done()
+        }
+    }
+    
+    func test_SwiftNetNetwork_Result_Failure_Error_In_Response_And_Status_Code_200() {
+        let httpClient = SwiftNetHttpClientMock()
+        let network = SwiftNetNetwork(httpClient: httpClient)
+        let request = SwiftNetRequestMock()
+        
+        httpClient.data = ErrorMockDto(errorCode: "foo", message: "bar").toData()
+        httpClient.urlResponse = HTTPURLResponse(url: URL(string: "https://foo.bar.com")!, statusCode: 200, httpVersion: nil, headerFields: nil)
+        
+        waitUntil(timeout: .seconds(3)) { done in
+            network.process(request) { result in
+                expect(result).to(beFailure { error in
+                    expect(error).to(matchError(SwiftNetError.serverError(errorCode: "foo", message: "bar")))
+                })
+            }
+            done()
+        }
+    }
+    
+    func test_SwiftNetNetwork_Result_Failure_Error_In_Response_And_Status_Code_Not_200() {
+        let httpClient = SwiftNetHttpClientMock()
+        let network = SwiftNetNetwork(httpClient: httpClient)
+        let request = SwiftNetRequestMock()
+        
+        httpClient.data = ErrorMockDto(errorCode: "foo", message: "bar").toData()
+        httpClient.urlResponse = HTTPURLResponse(url: URL(string: "https://foo.bar.com")!, statusCode: 500, httpVersion: nil, headerFields: nil)
+        
+        waitUntil(timeout: .seconds(3)) { done in
+            network.process(request) { result in
+                expect(result).to(beFailure { error in
+                    expect(error).to(matchError(SwiftNetError.serverError(errorCode: "foo", message: "bar")))
+                })
+            }
+            done()
+        }
+    }
+    
+    func test_SwiftNetNetwork_Result_Failure_No_Error_In_Response_And_Status_Code_Not_200() {
+        let httpClient = SwiftNetHttpClientMock()
+        let network = SwiftNetNetwork(httpClient: httpClient)
+        let request = SwiftNetRequestMock()
+        
+        httpClient.data = try! JSONEncoder().encode(SwiftNetRequestMock.ResponseMockDto(foo: "foo", bar: "bar"))
+        httpClient.urlResponse = HTTPURLResponse(url: URL(string: "https://foo.bar.com")!, statusCode: 500, httpVersion: nil, headerFields: nil)
+        
+        waitUntil(timeout: .seconds(3)) { done in
+            network.process(request) { result in
+                expect(result).to(beFailure { error in
+                    expect(error).to(matchError(SwiftNetError.serverError(errorCode: "500", message: "Server error")))
+                })
+            }
+            done()
+        }
+    }
 }

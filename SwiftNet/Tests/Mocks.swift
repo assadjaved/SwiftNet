@@ -63,8 +63,43 @@ class SwiftNetRequestMock: SwiftNetRequest {
     
     func decode(data: Data) throws -> Response {
         guard !forceDecodingError else {
-            throw NSError(domain: "com.swiftnet.mock", code: 1, userInfo: nil)
+            throw NSError.swiftNetMockError
         }
         return try JSONDecoder().decode(Response.self, from: data)
+    }
+}
+
+class SwiftNetHttpClientMock: SwiftNetHttpClient {
+    var error: Error?
+    var urlResponse: URLResponse?
+    var data: Data?
+    
+    func requestDataTask(with request: URLRequest, _ completion: @escaping @Sendable (Data?, URLResponse?, (any Error)?) -> Void) {
+        completion(data, urlResponse, error)
+    }
+    
+    func requestData(for request: URLRequest) async throws -> (Data, URLResponse) {
+        if let error {
+            throw error
+        } else if let data, let urlResponse {
+            return (data, urlResponse)
+        } else {
+            throw NSError.swiftNetMockError
+        }
+    }
+}
+
+extension NSError {
+    static var swiftNetMockError: Error {
+        NSError(domain: "com.swiftnet.mock", code: 1, userInfo: nil)
+    }
+}
+
+struct ErrorMockDto: Encodable, Equatable {
+    let errorCode: String
+    let message: String
+    
+    func toData() -> Data {
+        try! JSONEncoder().encode(self)
     }
 }
