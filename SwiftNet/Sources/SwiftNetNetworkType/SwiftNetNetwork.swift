@@ -66,6 +66,9 @@ class SwiftNetNetwork: SwiftNetNetworkType {
         // set body
         urlRequest.httpBody = requestBody
         
+        // set timeout
+        urlRequest.timeoutInterval = 30 // 30 seconds
+        
         return urlRequest
     }
     
