@@ -9,7 +9,7 @@ import SwiftUI
 
 @main
 struct SwiftNetAppApp: App {
-    let testBed = SwiftNetTestBed()
+    let testBed = SwiftNetTestBedWithAuth()
     var body: some Scene {
         WindowGroup {
             ContentView()

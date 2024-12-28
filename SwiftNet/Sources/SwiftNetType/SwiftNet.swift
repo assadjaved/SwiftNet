@@ -10,10 +10,15 @@ import Foundation
 public class SwiftNet: SwiftNetType {
     let network: SwiftNetNetworkType
     
-    public init() {
-        self.network = SwiftNetNetwork()
+    public init(httpAuthorization: SwiftNetAuthorization? = nil) {
+        self.network = SwiftNetNetwork(httpAuthorization: httpAuthorization)
     }
     
+    public func setHttpAuthorization(_ httpAuthorization: SwiftNetAuthorization) {
+        network.setHttpAuthorization(httpAuthorization)
+    }
+    
+    // Internal init for testing
     init(network: SwiftNetNetworkType) {
         self.network = network
     }

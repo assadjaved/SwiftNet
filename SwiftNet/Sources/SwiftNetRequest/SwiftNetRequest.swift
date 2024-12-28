@@ -20,10 +20,10 @@ public protocol SwiftNetRequest {
     // request method
     var method: SwiftNetRequestMethod { get }
     
-    // common request headers
+    // common request headers - e.g. authorization, content type, accept
     var headers: [SwiftNetRequestHeader] { get }
     
-    // additional request headers
+    // additional request headers - e.g. custom headers
     var additionalHeaders: [SwiftNetRequestHeader] { get }
     
     // request parameters

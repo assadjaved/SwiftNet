@@ -18,6 +18,8 @@ extension SwiftNetError: Equatable {
             return messageLhs == messageRhs
         case (.serverError(let errorCodeLhs, let messageLhs), .serverError(let errorCodeRhs, let messageRhs)):
             return errorCodeLhs == errorCodeRhs && messageLhs == messageRhs
+        case (.failedAuthorization, .failedAuthorization):
+            return true
         case (.decodingError(let errorLhs), .decodingError(let errorRhs)):
             return errorLhs.localizedDescription == errorRhs.localizedDescription
         default:

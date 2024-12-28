@@ -13,5 +13,6 @@ public enum SwiftNetError: Error {
     case invalidResponse
     case genericError(message: String)
     case serverError(errorCode: String, message: String)
+    case failedAuthorization
     case decodingError(error: Error)
 }

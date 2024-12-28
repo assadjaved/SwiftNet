@@ -15,25 +15,23 @@ extension SwiftNetNetwork {
         // set HTTP method
         urlRequest.httpMethod = request.method.value
         
-        do {
-            let (data, response) = try await httpClient.requestData(for: urlRequest)
-            
-            // check response
-            guard let httpResponse = response as? HTTPURLResponse else {
-                throw SwiftNetError.invalidResponse
-            }
-            
-            let statusCode = httpResponse.statusCode
-            let responseJSON = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
-            
-            if let error = scanResponseForError(statusCode, responseJSON: responseJSON) {
-                throw error
-            }
-            
-            return data
-            
-        } catch {
-            throw SwiftNetError.genericError(message: error.localizedDescription)
+        // make request
+        let (data, response) = try await httpClient.requestData(for: urlRequest)
+        
+        // check response
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw SwiftNetError.invalidResponse
         }
+        
+        let statusCode = httpResponse.statusCode
+        let responseJSON = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
+        
+        // scan response for error
+        if let error = scanResponseForError(statusCode, responseJSON: responseJSON) {
+            throw error
+        }
+        
+        // return data
+        return data
     }
 }

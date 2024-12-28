@@ -16,6 +16,9 @@ public enum SwiftNetRequestHeader {
     // Authorization e.g. Bearer <token>
     case authorization(token: String)
     
+    // Custom header
+    case custom(key: String, value: String)
+    
     // header key and value
     var httpHeader: (key: String, value: String) {
         switch self {
@@ -24,7 +27,9 @@ public enum SwiftNetRequestHeader {
         case .accept(let value):
             return ("Accept", value.rawValue)
         case .authorization(let token):
-            return ("Authorization", token)
+            return ("Authorization", token.asBearerToken())
+        case let .custom (key, value):
+            return (key, value)
         }
     }
 }

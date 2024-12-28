@@ -13,9 +13,18 @@ class SwiftNetNetwork: SwiftNetNetworkType {
     }
     
     let httpClient: SwiftNetHttpClient
+    private var httpAuthorization: SwiftNetAuthorization?
     
-    init(httpClient: SwiftNetHttpClient = URLSession.shared) {
+    init(
+        httpClient: SwiftNetHttpClient = URLSession.shared,
+        httpAuthorization: SwiftNetAuthorization?
+    ) {
         self.httpClient = httpClient
+        self.httpAuthorization = httpAuthorization
+    }
+    
+    func setHttpAuthorization(_ httpAuthorization: SwiftNetAuthorization) {
+        self.httpAuthorization = httpAuthorization
     }
     
     func createRequestURL(from request: any SwiftNetRequest) -> URLRequest? {
@@ -45,7 +54,10 @@ class SwiftNetNetwork: SwiftNetNetworkType {
         var urlRequest = URLRequest(url: url)
         
         // set headers
-        let requestHeaders = request.headers + request.additionalHeaders
+        var requestHeaders = request.headers + request.additionalHeaders
+        if let token = httpAuthorization?.tokenRepository.accessToken {
+            requestHeaders.append(.authorization(token: token))
+        }
         for requestHeader in requestHeaders {
             let httpHeader = requestHeader.httpHeader
             urlRequest.setValue(httpHeader.value, forHTTPHeaderField: httpHeader.key)
@@ -88,11 +100,14 @@ class SwiftNetNetwork: SwiftNetNetworkType {
         // handle success status code
         case 200...299:
             if let errorCode {
-                return SwiftNetError.serverError(errorCode: errorCode, message: message)
+                return .serverError(errorCode: errorCode, message: message)
             }
+        // handle authorization error
+        case 401, 403:
+            return .failedAuthorization
         // handle other status codes
         default:
-            return SwiftNetError.serverError(errorCode: errorCode ?? String(statusCode), message: message)
+            return .serverError(errorCode: errorCode ?? String(statusCode), message: message)
         }
         
         return nil

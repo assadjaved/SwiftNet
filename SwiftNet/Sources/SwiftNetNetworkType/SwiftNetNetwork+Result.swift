@@ -40,11 +40,13 @@ extension SwiftNetNetwork {
             let statusCode = httpResponse.statusCode
             let responseJSON = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
             
+            // scan response for error
             if let error = self?.scanResponseForError(statusCode, responseJSON: responseJSON) {
                 completion(.failure(error))
                 return
             }
             
+            // return data
             completion(.success(data))
         }
     }
