@@ -9,6 +9,7 @@
 
 class SwiftNetNetworkMock: SwiftNetNetworkType {
     var error: SwiftNetError?
+    var httpAuthorization: SwiftNetAuthorization?
     
     func process<T: SwiftNetRequest>(_ request: T, completion: @escaping (Result<Data, SwiftNetError>) -> Void) {
         if let error {
@@ -28,6 +29,10 @@ class SwiftNetNetworkMock: SwiftNetNetworkType {
             let data = try! JSONEncoder().encode(response)
             return data
         }
+    }
+    
+    func setHttpAuthorization(_ httpAuthorization: SwiftNetAuthorization) {
+        self.httpAuthorization = httpAuthorization
     }
 }
 

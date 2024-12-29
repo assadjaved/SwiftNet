@@ -17,7 +17,7 @@ class SwiftNetNetwork: SwiftNetNetworkType {
     
     init(
         httpClient: SwiftNetHttpClient = URLSession.shared,
-        httpAuthorization: SwiftNetAuthorization?
+        httpAuthorization: SwiftNetAuthorization? = nil
     ) {
         self.httpClient = httpClient
         self.httpAuthorization = httpAuthorization
